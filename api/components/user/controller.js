@@ -1,10 +1,22 @@
-const sotre = require('../../../store/dummy');
 const TABLE_USER = 'user';
 
-function list() {
-	return sotre.list(TABLE_USER);
-}
+module.exports = function (injectedStore) {
+	let store = injectedStore;
 
-module.exports = {
-	list,
+	if (!store) {
+		store = require('../../../store/dummy');
+	}
+
+	function list() {
+		return store.list(TABLE_USER);
+	}
+
+	function get(id) {
+		return store.get(TABLE_USER, id);
+	}
+
+	return {
+		list,
+		get,
+	};
 };
