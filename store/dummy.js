@@ -2,16 +2,16 @@ const db = {
 	user: [{ id: 1, name: 'Carlos' }],
 };
 
-function list(table) {
+async function list(table) {
 	return db[table];
 }
 
-function get(table, id) {
-	const collection = list(table);
+async function get(table, id) {
+	const collection = await list(table);
 	return collection.filter((item) => item.id === id)[0] || null;
 }
 
-function upsert(table, data) {
+async function upsert(table, data) {
 	if (!db[table]) {
 		db[table] = [];
 	}
@@ -20,7 +20,7 @@ function upsert(table, data) {
 	console.log(db);
 }
 
-function remove(table, id) {
+async function remove(table, id) {
 	return true;
 }
 
