@@ -1,9 +1,17 @@
 const express = require('express');
 const response = require('../../../network/response');
-const router = express.Router();
 const Controller = require('./index');
 
-router.get('/', function (req, res) {
+const router = express.Router();
+
+//Routes
+router.get('/', list);
+router.get('/:id', get);
+router.post('/', upsert);
+router.put('/', upsert);
+
+//Internal functions
+function list(req, res) {
 	Controller.list()
 		.then((list) => {
 			response.success(req, res, list, 200);
@@ -11,9 +19,9 @@ router.get('/', function (req, res) {
 		.catch((err) => {
 			response.error(req, res, err.message, 500);
 		});
-});
+}
 
-router.get('/:id', function (req, res) {
+function get(req, res) {
 	const { id } = req.params;
 	Controller.get(parseInt(id))
 		.then((user) => {
@@ -22,6 +30,16 @@ router.get('/:id', function (req, res) {
 		.catch((err) => {
 			response.error(req, res, err.message, 500);
 		});
-});
+}
+
+function upsert(req, res) {
+	Controller.upsert(req.body)
+		.then((user) => {
+			response.success(req, res, user, 201);
+		})
+		.catch((err) => {
+			response.error(req, res, err.message, 500);
+		});
+}
 
 module.exports = router;
