@@ -83,8 +83,8 @@ function update(table, data) {
 	});
 }
 
-async function upsert(table, data) {
-	if (data && data.id) {
+async function upsert(table, data, isNew) {
+	if (!isNew) {
 		return update(table, data);
 	} else {
 		return insert(table, data);
