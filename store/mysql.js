@@ -91,10 +91,17 @@ async function upsert(table, data, isNew) {
 	}
 }
 
-function query(table, query) {
+function query(table, query, join) {
+	let joinQuery = '';
+	if (join) {
+		const key = Object.keys(join)[0];
+		const val = join[key];
+		joinQuery = `JOIN ${key} ON ${table}.${val} = ${key}.id`;
+	}
+
 	return new Promise((resolve, reject) => {
 		connection.query(
-			`SELECT * FROM ${table} WHERE ?`,
+			`SELECT * FROM ${table} ${joinQuery} WHERE ${table}.?`,
 			query,
 			(err, res) => {
 				if (err) return reject(err);
