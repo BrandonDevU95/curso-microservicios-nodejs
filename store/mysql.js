@@ -47,7 +47,8 @@ function list(table) {
 function get(table, id) {
 	return new Promise((resolve, reject) => {
 		connection.query(
-			`SELECT * FROM ${table} WHERE id='${id}'`,
+			`SELECT * FROM ${table} WHERE id=?`,
+			[id],
 			(err, data) => {
 				if (err) return reject(err);
 				resolve(data);
@@ -83,8 +84,7 @@ function update(table, data) {
 }
 
 async function upsert(table, data) {
-	const row = await get(table, data.id);
-	if (row.length > 0) {
+	if (data && data.id) {
 		return update(table, data);
 	} else {
 		return insert(table, data);
