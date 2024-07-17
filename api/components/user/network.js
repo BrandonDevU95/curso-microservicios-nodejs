@@ -12,17 +12,18 @@ router.post('/', upsert);
 router.put('/', secure('update'), upsert);
 
 //Internal functions
-function list(req, res) {
+function list(req, res, next) {
 	Controller.list()
 		.then((list) => {
 			response.success(req, res, list, 200);
 		})
 		.catch((err) => {
 			response.error(req, res, err.message, 500);
-		});
+		})
+		.catch(next);
 }
 
-function get(req, res) {
+function get(req, res, next) {
 	const { id } = req.params;
 	Controller.get(parseInt(id))
 		.then((user) => {
@@ -30,17 +31,19 @@ function get(req, res) {
 		})
 		.catch((err) => {
 			response.error(req, res, err.message, 500);
-		});
+		})
+		.catch(next);
 }
 
-function upsert(req, res) {
+function upsert(req, res, next) {
 	Controller.upsert(req.body)
 		.then((user) => {
 			response.success(req, res, user, 201);
 		})
 		.catch((err) => {
 			response.error(req, res, err.message, 500);
-		});
+		})
+		.catch(next);
 }
 
 module.exports = router;
