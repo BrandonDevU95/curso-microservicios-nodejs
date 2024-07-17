@@ -13,7 +13,7 @@ module.exports = function (injectedStore) {
 		const data = await store.query(TABLE_AUTH, { username: username });
 		return bcrypt.compare(password, data.password).then((isValid) => {
 			if (isValid) {
-				return auth.sign(data);
+				return auth.sign({ ...data });
 			} else {
 				throw new Error('Invalid information');
 			}
@@ -33,7 +33,7 @@ module.exports = function (injectedStore) {
 			authData.password = await bcrypt.hash(data.password, 10);
 		}
 
-		return store.upsert(TABLE_AUTH, authData);
+		return store.upsert(TABLE_AUTH, authData, true);
 	}
 
 	return {
