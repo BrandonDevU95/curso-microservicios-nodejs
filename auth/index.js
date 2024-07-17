@@ -6,7 +6,7 @@ const err = require('../utils/error');
 const secret = config.jwt.secret;
 
 function sign(data) {
-	const token = jwt.sign(JSON.stringify(data), secret);
+	const token = jwt.sign(data, secret);
 	return token;
 }
 
