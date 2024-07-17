@@ -44,6 +44,70 @@ function list(table) {
 	});
 }
 
+function get(table, id) {
+	return new Promise((resolve, reject) => {
+		connection.query(
+			`SELECT * FROM ${table} WHERE id='${id}'`,
+			(err, data) => {
+				if (err) return reject(err);
+				resolve(data);
+			}
+		);
+	});
+}
+
+function insert(table, data) {
+	return new Promise((resolve, reject) => {
+		connection.query(
+			`INSERT INTO ${table} SET ? ON DUPLICATE KEY UPDATE ?`,
+			[data, data],
+			(err, result) => {
+				if (err) return reject(err);
+				resolve(result);
+			}
+		);
+	});
+}
+
+function update(table, data) {
+	return new Promise((resolve, reject) => {
+		connection.query(
+			`UPDATE ${table} SET ? WHERE id=?`,
+			[data, data.id],
+			(err, result) => {
+				if (err) return reject(err);
+				resolve(result);
+			}
+		);
+	});
+}
+
+async function upsert(table, data) {
+	const row = await get(table, data.id);
+	if (row.length > 0) {
+		return update(table, data);
+	} else {
+		return insert(table, data);
+	}
+}
+
+function query(table, query) {
+	return new Promise((resolve, reject) => {
+		connection.query(
+			`SELECT * FROM ${table} WHERE ?`,
+			query,
+			(err, res) => {
+				if (err) return reject(err);
+				resolve(res[0] || null);
+			}
+		);
+	});
+}
+
 module.exports = {
 	list,
+	get,
+	insert,
+	upsert,
+	query,
 };
