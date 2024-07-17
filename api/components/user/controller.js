@@ -36,15 +36,18 @@ module.exports = function (injectedStore) {
 				password: body.password,
 			});
 		}
-
-		return store.upsert(TABLE_USER, user);
+		return store.upsert(TABLE_USER, user, true);
 	}
 
 	async function follow(from, to) {
-		return store.upsert(`${TABLE_USER}_follow`, {
-			user_from: from,
-			user_to: to,
-		});
+		return store.upsert(
+			`${TABLE_USER}_follow`,
+			{
+				user_from: from,
+				user_to: to,
+			},
+			true
+		);
 	}
 
 	return {
