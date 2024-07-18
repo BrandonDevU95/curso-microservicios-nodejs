@@ -1,6 +1,7 @@
 const { post } = require('request');
 
 module.exports = {
+	remoteDB: process.env.REMOTE_DB || false,
 	api: {
 		port: process.env.PORT || 3000,
 	},
