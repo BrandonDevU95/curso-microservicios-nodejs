@@ -131,3 +131,4 @@ dist
 
 mysql_data
 redis_data
+redisinsight_data
