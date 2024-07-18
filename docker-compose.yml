@@ -21,3 +21,24 @@ services:
         container_name: phpmyadmin_microservicios
         ports:
             - '8080:80'
+    redis:
+        image: redis:6.0.7
+        container_name: redis_microservicios
+        restart: always
+        ports:
+            - '6379:6379'
+        volumes:
+            - ./redis_data:/data
+
+    redisinsight:
+        image: redislabs/redisinsight:1.14.0
+        container_name: redisinsight_microservicios
+        restart: always
+        ports:
+            - '8001:8001'
+        volumes:
+            - ./redisinsight_data:/db
+volumes:
+    mysql_data:
+    redis_data:
+    redisinsight_data:
