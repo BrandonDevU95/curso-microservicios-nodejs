@@ -25,4 +25,8 @@ module.exports = {
 		port: process.env.CACHE_PORT || 3003,
 		host: process.env.CACHE_HOST || 'localhost',
 	},
+	redis: {
+		host: process.env.REDIS_HOST || 'localhost',
+		port: process.env.REDIS_PORT || 6379,
+	},
 };
