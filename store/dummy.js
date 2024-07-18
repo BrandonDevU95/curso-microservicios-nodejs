@@ -1,5 +1,9 @@
 const db = {
-	user: [{ id: 1, name: 'Carlos' }],
+	user: [
+		{ id: 1, name: 'Carlos' },
+		{ id: 2, name: 'Luis' },
+		{ id: 3, name: 'Juan' },
+	],
 };
 
 async function list(table) {
