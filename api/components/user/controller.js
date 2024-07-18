@@ -7,11 +7,11 @@ module.exports = function (injectedStore, injectedCache) {
 	let cache = injectedCache;
 
 	if (!store) {
-		store = require('../../../store/mysql');
+		store = require('../../../store/dummy');
 	}
 
 	if (!cache) {
-		cache = require('../../../store/redis');
+		cache = require('../../../store/dummy');
 	}
 
 	async function list() {
