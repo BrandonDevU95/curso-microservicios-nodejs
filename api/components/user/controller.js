@@ -2,15 +2,30 @@ const nanoid = require('nanoid');
 const auth = require('../auth');
 const TABLE_USER = 'user';
 
-module.exports = function (injectedStore) {
+module.exports = function (injectedStore, injectedCache) {
 	let store = injectedStore;
+	let cache = injectedCache;
 
 	if (!store) {
 		store = require('../../../store/mysql');
 	}
 
-	function list() {
-		return store.list(TABLE_USER);
+	if (!cache) {
+		cache = require('../../../store/redis');
+	}
+
+	async function list() {
+		let users = await cache.list(TABLE_USER);
+
+		if (!users) {
+			// console.log('No estaba en cache. Buscando en DB');
+			users = await store.list(TABLE_USER);
+			cache.upsert(TABLE_USER, users);
+		} else {
+			// console.log('Nos traemos datos de cache');
+		}
+
+		return users;
 	}
 
 	function get(id) {
