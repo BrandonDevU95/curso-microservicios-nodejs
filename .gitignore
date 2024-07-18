@@ -130,3 +130,4 @@ dist
 .pnp.*
 
 mysql_data
+redis_data
